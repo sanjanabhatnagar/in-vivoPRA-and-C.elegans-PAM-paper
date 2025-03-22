@@ -17,54 +17,31 @@ Next, best_multi_homologfinder.sh is ran on these protein sequence alignments, a
 1. Best Ortholog, with highest PID  sequence containing files into the user specified directory ("*_best_homologs.fa" extension). For example - 
 ```
 >CELEG.F36H1.2e
-------------------------------------------------------------
-------------------------------------------------------------
 ---------------------------------MV---------QT--------------
 --LRR---------------P--W----------QEAA--SSAFAVASALPV-TMNSTQI
 AELFEQVEHGTTE-LRCALTAEISALRNANGESLLTVAVRSGNTAVAKQLAQLDPDA-ID
-ETDNEGWSALLNAAHCGHVDIVRLLIDNGASVDQPDLMGWSPLMWAVYKNHLDVVDLLVN
-AKAHVNLIDEEDGLTPLIVASGRGFSQIVERLIDSDCQVNACDKFGSTALIWAARKGHLP
-VVQLLLNSGAEVDAVGM---------------YSSTALMLATRGNFIQVVELLLTREPNV
-NVADQNGLTALGMAARDGYADICESLINSGAFVNQCDRFGNWILTSAVRSGNAAIVRMIL
-DKFADINCQDSEKRTPLHLAIDKSFNDIAYILLEKKPNLELKNKDGETPLLRAAKCRHVH
-LCTYLMSFGAKLAAVDNCGDNALHLALRARSRRLTQALLSNPSDSRLLYRPNKLGQTPYS
-IDLSNPQPILPLIFGPIDAEDKMDTAMGYDVYSNVLADIVCEPSLSLPLTIGLYAKWGSG
-KSALLAKLKEAMHSFSRDWLDGVSLSVSFALFFAIFLFFGMFSLTFTMLIAISNSVTAYL
+...
 >CAFRA.g8544.t2_PID:0.1400137268359643
-------------------------------------------------------------
-------------------------------------------------------------
 ---------------------------------MVV--------QT--------------
 --LLR---------------P--W----------QEAA--TSAFAVASALPV-TMNSTQI
 AELFEQVEQGESEQLRCALTAELISMRNANGESLLVVAARVGNSAVAKQLIHLESSQFLN
-ETDCEGWTPLLNASHGGHVEVVRLLIDNKASIDQADMMGWSPLMWAVYKNRYDCVDLLIE
-AKAHVNLIDDEDGLTPLIVASGRGFAQIVERLIEADCQVNACDKFGSTALIWAARKGHLP
-VVEMLLNSGAEVDAVGM---------------YSSTALMLATRGNYLQVVDLLLTREPNV
-NVADQNGLTALGMAARDGYADICESLINSGAFVNQCDRFGNWILTSSVRSGNAAIVRMVL
-EKFADINCQDSEKRTPLHLAIDKSFNDIAYILLERKPNLELKNKDGETPLLRAAKCRHVT
-LCTALLSFGAKLAAVDNCGDNALHLALRARSRRLTQALLSNPSDSRLLYRPNKLGQTPYS
-IDLSNPQPILPLIFGPIDAEDKMDTAMGYDVYSNVLADIVCEPSLALPLTIGLYAKWGSG
 ...
 ```
 2. File containing list of all orthologs from a species and corresponding PID with C.elegans ortholog within the group.
 ```
 Event	Ref	Sps	PID
-./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CAFRA.g15861.t1	0.11073825503355705
-./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CANGA.Cang_2012_03_13_05703.g19786.t1	0.03937007874015748
-./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CASTR.g2434.t2	0.16016713091922005
 ./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CBECE.CSP29.g10568.t2	0.10133333333333333
 ./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CBOVI.g1040.t1	0.20364238410596028
 ./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CBOVI.g1041.t2	0.19103773584905662
 ./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CBREN.CBN18509	0.07034372501998401
 ./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CBREN.CBN25584	0.07344632768361582
-./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CBRIG.CBG06373a	0.08626410086264101
-./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CCAST.g14643.t1	0.1988988300068823
 ...
 ```
 ## 2. Extracting best orthologs nucleotide sequences based on previously calculated protein alignment PIDs.
 
-Next, WG_multi_besthomolog.sh is run to subset the sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
+Next, WG_multi_besthomolog.sh is run to subset the nucleotide sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
 ```
-nohup bash WG_multi_besthomolog.sh BH_protien_alignments_directory nucleotide_fasta_directory ./home_directory/ > output.txt &
+nohup bash WG_multi_besthomolog.sh BH_protien_alignments_directory nucleotide_fasta_directory ./output_folder/ > output.txt &
 ```
 
 # References
