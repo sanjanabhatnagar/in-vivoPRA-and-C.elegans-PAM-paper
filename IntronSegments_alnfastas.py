@@ -7,8 +7,22 @@ from Bio.Seq import Seq
 from Bio.Align import MultipleSeqAlignment
 import pandas as pd
 
+parent_name = sys.argv[1]
+alignment_file = sys.argv[2] # Will take the alignment file with extension .aln 
+reference_id = "CELEG"  # ID I have in the file
 
-# First, only gapped start and end for C elegans, inferred from the alignments, are returned. 
+#Following files are generated from gff_exon-intron_annotation.py 
+#github repository - https://github.com/sanjanabhatnagar/Inferring-Exon-and-Intron-Metadata-from-.gff-file.git
+ExonIntron_coordinartesFile = sys.argv[3]
+coordinate_df_exonintron = pd.read_csv(ExonIntron_coordinartesFile, sep='\t')
+
+flank_size=None # Optional, I didn't use it for Cels since my gff_exon-intron_annotation.py script lets me select what size fragments I want. So my data is ready to use.
+filtered_df = coordinate_df_exonintron[coordinate_df_exonintron['Parent'].str.contains(parent_name)][['Parent','group','ID','start','end','strand']]
+
+output_dir = sys.argv[4]  # Specify the directory for intron fragments.
+
+extract_gapped_exon_intron_sequences(alignment_file, reference_id, filtered_df, flank_size, output_dir)
+
 def find_sps_fragment_in_sps_seq(sps_aln_fragment, sps_wholegene_aln):
     aln_fragmn_positionStart = sps_wholegene_aln.find(sps_aln_fragment)
     aln_fragmn_positionEnd = aln_fragmn_positionStart + len(sps_aln_fragment) + 1
@@ -19,7 +33,6 @@ def map_ungapped_to_gapped(aligned_seq, ungapped_start, ungapped_end):
     gapped_end = None
     ungapped_pos = 0
 
-#This indexes each character including gaps. 
     for i, char in enumerate(aligned_seq, start=0):
         if char != '-':
             if ungapped_pos == ungapped_start: 
@@ -29,7 +42,6 @@ def map_ungapped_to_gapped(aligned_seq, ungapped_start, ungapped_end):
                 break
             ungapped_pos += 1
 
-    # If gapped_end wasn't found exactly, set it to the last non-gap character
     if gapped_end is None:
         gapped_end = len(aligned_seq)
 
@@ -127,20 +139,18 @@ def extract_gapped_exon_intron_sequences(alignment_file, reference_id, coords_df
                     frgmn_type="up"
                     output_file = f"{output_dir}/{parent_name}_exon_{exon_start}_{exon_end}_UpstreamIntronFragment_{CelsIntronStart}_{CelsIntronEnd}.fasta"
 
-        # Open file to write the downstream intron sequences for this exon-intron pair
             with open(output_file, "w") as intron_handle:
                 Cels_intron_ungapped = ""
                 record_intron = ""
                 reference_id_aln = None
                 record_intron_Cels = ""
-                # Extract the intron sequence for each record in the alignment
-                # My code finds one intron per exon which is the downstream intron to avoid redundancy. 
+          
                 for record in alignment:
                     record_id = record.id
                     j = 0
                     for aln_fragment in exon_alignment:
                         if reference_id in record_id:
-                            # taking intron based on the gtf coordinates and size from Celegans aligned seq
+                            # taking intron based on the gff inferred coordinates and size from Celegans aligned seq
                             reference_seq_aln = record.seq
                             reference_id_aln = record.id
                             Cels_intron_gapped = reference_seq_aln[gapped_intron_start:gapped_intron_end] # Here it takes both upstream and downstream intron correctly for C.elegans/ref species
@@ -195,15 +205,4 @@ def extract_gapped_exon_intron_sequences(alignment_file, reference_id, coords_df
 
                 intron_handle.write(f">{reference_id_aln}\n{record_intron_Cels}\n")
 
-parent_name = sys.argv[1]
-alignment_file = sys.argv[2] # Will take the alignment file with extension .aln 
-reference_id = "CELEG"  # ID I have in the file
-ExonIntron_coordinartesFile = sys.argv[3]
-coordinate_df_exonintron = pd.read_csv(ExonIntron_coordinartesFile, sep='\t')
-flank_size=None # Optional, I didn't use it for Cels since my gtf script let me select what size fragments I want. So my data is ready to use.
-filtered_df = coordinate_df_exonintron[coordinate_df_exonintron['Parent'].str.contains(parent_name)][['Parent','group','ID','start','end','strand']]
-
-output_dir = sys.argv[4]  # Specify the directory for intron fragments.
-
-extract_gapped_exon_intron_sequences(alignment_file, reference_id, filtered_df, flank_size, output_dir)
 ~                                                                                                               
