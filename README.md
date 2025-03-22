@@ -39,10 +39,27 @@ Event	Ref	Sps	PID
 ```
 ## 2. Extracting best orthologs nucleotide sequences based on previously calculated protein alignment PIDs.
 
-Next, WG_multi_besthomolog.sh is run to subset the nucleotide sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
+Next, WG_multi_besthomolog.sh is run to subset the whole gene nucleotide sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
 ```
 nohup bash WG_multi_besthomolog.sh BH_protien_alignments_directory nucleotide_fasta_directory ./output_folder/ > output.txt &
 ```
+It outputs files with *_PIDfilter.fa!
+
+Additional steps are performed to ensure there's only one occurence of each species name in each file in the directory and thus only one, best ortholog is chosen from each species. 
+
+## 3. Whole gene alignments within ortholog groups
+
+The obtained gene sequence files with best orthologs, are aligned using MAFFT. The purpose behind aligning the whole gene sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group.  Following command is used - 
+```
+~/mafft --adjustdirection --quiet --auto --thread 3  Gene_PIDfilter_file > Gene_PIDfilter_file.aln
+```
+Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. 
+
+## 4. Extracting per species intron fragments from whole gene sequence alignments.
+
+
+
+
 
 # References
 
