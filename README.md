@@ -1,7 +1,7 @@
 # Name of the Paper
 
 
-## Performing protein alignments to find best orthologs
+## 1. Performing protein alignments to find best orthologs
 
 The protein alignments were conducted using MAFFT (Katoh et al., 2019). MAFFT can be installed using conda - 
 ```
