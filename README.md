@@ -12,7 +12,8 @@ MAFFT was used with the following parameters. This can be enclosed within shell 
 ```
 ~/mafft --quiet --auto --thread 3  protein_seq > protein_seq.aln
 ```
-Next, best_multi_homologfinder.sh is ran on these protein sequence alignments, and this picks the best ortholog per species for C. elegans from the ortholog group by calculating percent identity (PID). It calls the Best_homologfinder.py script and outputs
+Next, best_multi_homologfinder.sh is ran on these protein sequence alignments, and this picks the best ortholog per species for C. elegans from the ortholog group by calculating percent identity (PID). It calls the Best_homologfinder.py script and outputs - 
+
 1. Best Ortholog, with highest PID  sequence containing files into the user specified directory ("*_best_homologs.fa" extension). For example - 
 ```
 >CELEG.F36H1.2e
@@ -59,7 +60,12 @@ Event	Ref	Sps	PID
 ./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CCAST.g14643.t1	0.1988988300068823
 ...
 ```
+## 2. Extracting best orthologs nucleotide sequences based on previously calculated protein alignment PIDs.
 
+Next, WG_multi_besthomolog.sh is run to subset the sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
+```
+nohup bash WG_multi_besthomolog.sh BH_protien_alignments_directory nucleotide_fasta_directory ./home_directory/ > output.txt &
+```
 
 # References
 
