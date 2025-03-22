@@ -39,7 +39,7 @@ Event	Ref	Sps	PID
 ```
 ## 2. Extracting best orthologs nucleotide sequences based on previously calculated protein alignment PIDs.
 
-Next, WG_multi_besthomolog.sh is run to subset the whole gene nucleotide sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
+Next, WG_multi_besthomolog.sh is run to subset the longest transcript nucleotide sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
 ```
 nohup bash WG_multi_besthomolog.sh BH_protien_alignments_directory nucleotide_fasta_directory ./output_folder/ > output.txt &
 ```
@@ -47,19 +47,45 @@ It outputs files with *_PIDfilter.fa!
 
 Additional steps are performed to ensure there's only one occurence of each species name in each file in the directory and thus only one, best ortholog is chosen from each species. 
 
-## 3. Whole gene alignments within ortholog groups
+## 3. Longest transcript alignments within ortholog groups
 
-The obtained gene sequence files with best orthologs, are aligned using MAFFT. The purpose behind aligning the whole gene sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group.  Following command is used - 
+The obtained gene sequence files with best orthologs, are aligned using MAFFT. The purpose behind aligning the longest transcript sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group.  Following command is used - 
 ```
 ~/mafft --adjustdirection --quiet --auto --thread 3  Gene_PIDfilter_file > Gene_PIDfilter_file.aln
 ```
 Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. 
 
-## 4. Extracting per species intron fragments from whole gene sequence alignments.
+## 4. Extracting per species intron fragments from longest transcript sequence alignments.
 
+```
+nohup bash Fragments_AlignedSeqs.sh ./Neuro_Mus_Switch/TranscriptNames_Cutterlab.txt BH_nucleotide_fasta_aln_directory ./output_folder/ > output.txt &
 
+#This in turn calls IntronSegments_alnfastas.py and it is run on different ortholog groups as follows - 
+#python IntronSegments_alnfastas.py B0348.4d.1 ./Neuro_Mus_Switch//BH_nucleotide_fasta_aln_directory/B0348.4_PIDfilter.fa.aln #~/Exon_IntronFragment_coordinates.tsv ~/introns_BH_nucleotide_fasta_aln_directory/
+```
+It outputs this file while running and the information can be checked to ensure it is running as expected.
 
-
+```
+Directory for search: BH_nucleotide_fasta_aln_directory
+dir ./BH_nucleotide_fasta_aln_directory/
+Searching aligned files for : B0348.4d.1
+The B0348.4d.1 matched with B0348.4 fasta :o. Now extracting intron fragments! :)
+The exon start : 0. The exon end : 83
+       start  end
+10424     84  154
+The length of C.elegans intron fragment is : 70
+The relative ungapped coordinates are 84 and 154
+The corresponding gapped coordinates are 386 and 1751
+*-------------------------------------*-*-------------------------------------*
+The exon start : 1488. The exon end : 1849
+       start   end
+10425   1417  1487
+10427   1850  1920
+The length of C.elegans intron fragment is : 70
+The relative ungapped coordinates are 1417 and 1487
+The corresponding gapped coordinates are 6224 and 6464
+...
+```
 
 # References
 
