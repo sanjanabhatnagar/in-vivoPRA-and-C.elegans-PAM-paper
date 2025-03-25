@@ -92,12 +92,12 @@ The inference of adjacent introns relies on a given exon. Therefore, if an exon 
 
 For calculating the conservation scores, we ensure that sequences within an ortholog group does not contain ambiguous nucleotides, doesn't contain redundant sequences and contains sequences with a minimum distance of 0.01. Hence, the intronic sequences are aligned just for this quality control step where sequences not passing the abovementioned criteria are filtered out before proceeding with the computation of phylogenetically averaged motif scores (PAM) scores. The custom scripts from Alam et al. were used for this step. In order to get the alignments for this filtering step, the same MAFFT command with the parameter, --adjustdirection was used. 
 
-Once the sequences are verified and filtered, we fix the orientation. For the downstream analysis, all intronic sequences, irrespective of the original strandedness of the gene, are converted to positive strand orientation. The shell script revcomp.sh is used which in turn calls a python script called revcomp_afterIntronFragments.py.
+Once the sequences are verified and filtered, we fix the orientation. For the downstream analysis, all intronic sequences, irrespective of the original strandedness of the gene, are converted to positive strand orientation. The shell script revcomp.sh is used which in turn calls a python script called revcomp_afterIntronFragments.py.finalintrons_aln is the name of the folder containing the alignments of the extracted intron fragments.
 
-'''
+```
 nohup bash revcomp_Introns.sh ./Positive_Strand_gene_names.txt + finalintrons_aln ./output_folder/ &
-nohup bash revcomp_Introns.sh ./Negative_Strand_gene_names.txt - finalintrons_aln ./Neuro_folder/ &
-'''
+nohup bash revcomp_Introns.sh ./Negative_Strand_gene_names.txt - finalintrons_aln ./output_folder/ &
+```
 
 # References
 
