@@ -1,6 +1,6 @@
 # Name of the Paper
 
-# Table of contents - 
+# Table of contents/
 
 
 ## 1. Performing protein alignments to find best orthologs
