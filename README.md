@@ -90,7 +90,17 @@ The corresponding gapped coordinates are 6224 and 6464
 ```
 The inference of adjacent introns relies on a given exon. Therefore, if an exon in one species cannot be aligned to exons in others, the adjacent introns for that exon will not be inferred in those species. The inferred introns are checked for fragments of same size across each species in the files chosen arbitrarily. In this case, we are using all introns shorter than 70 bp and the longer introns are broken into 70 bp fragments from either splice site. 
 
-For calculating the conservation scores, we ensure that sequences within an ortholog group does not contain ambiguous nucleotides, doesn't contain redundant sequences and contains sequences with a minimum distance of 0.01. Hence, the intronic sequences are aligned just for this quality control step where sequences not passing the abovementioned criteria are filtered out before proceeding with the computation of phylogenetically averaged motif scores (PAM) scores. The custom scripts from Alam et al. were used for this step. In order to get the alignments for this filtering step, the same MAFFT command with the parameter, --adjustdirection was used. 
+For calculating the conservation scores, we ensure that sequences within an ortholog group does not contain ambiguous nucleotides, doesn't contain redundant sequences and contains sequences with a minimum distance of 0.01. Hence, the intronic sequences are aligned just for this quality control step where sequences not passing the abovementioned criteria are filtered out and the sequences that pass are stored in files with extension '.filtered'. The custom scripts from Alam et al. were used for this step. It also yeilds a file where the summary of the changes made to each sequence file are logged. The output is -
+
+```
+FILE	REF	Nbefore	Nafter	total_distance	stats
+B0348.4d.1_exon_0_83_DownstreamIntronFragment_84_154.fasta	CELEG.B0348.4d	34	50	165.0	too close:16 
+B0348.4d.1_exon_10333_10575_DownstreamIntronFragment_10576_10646.fasta	CELEG.B0348.4d	36	50	175.0	too close:14 
+B0348.4d.1_exon_14008_14149_DownstreamIntronFragment_14150_14220.fasta	CELEG.B0348.4d	40	50	195.0	Ns:1 too close:9 
+B0348.4d.1_exon_14008_14149_UpstreamIntronFragment_13937_14007.fasta	CELEG.B0348.4d	43	46	210.0	too close:3 
+B0348.4d.1_exon_1488_1849_DownstreamIntronFragment_1850_1920.fasta	CELEG.B0348.4d	45	50	220.0	too close:5 
+B0348.4d.1_exon_1488_1849_UpstreamIntronFragment_1417_1487.fasta	CELEG.B0348.4d	42	46	205.0	short:1 too close:3 
+```
 
 Once the sequences are verified and filtered, we fix the orientation. For the downstream analysis, all intronic sequences, irrespective of the original strandedness of the gene, are converted to positive strand orientation. The shell script revcomp.sh is used which in turn calls a python script called revcomp_afterIntronFragments.py.finalintrons_aln is the name of the folder containing the alignments of the extracted intron fragments.
 
