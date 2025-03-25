@@ -112,11 +112,57 @@ Once the sequences are verified and filtered, we fix the orientation. For the do
 nohup bash revcomp_Introns.sh ./Positive_Strand_gene_names.txt + finalintrons_aln ./output_folder/ &
 nohup bash revcomp_Introns.sh ./Negative_Strand_gene_names.txt - finalintrons_aln ./output_folder/ &
 ```
+## 5. Computing phylogenetically averaged motif (PAM) scores for PRA splicing regulatory cluster PWMs in intronic fragments
+The script compute_PAMS.py, was adapted from Alam et al. for intronic fragments. Certain parameters were modified for this RNA context -
+
+```
+MOL_TYPE = "RNA" 
+minN = 5 # Minimum number of orthologs required for PAM score calculation
+SEQ_L = 70 # Length of intronic fragments
+FILE_EXT = ".filtered" # Ensuring that PAM scores are only calculated using clean files with filtered sequences.
+outfilename = "./PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.csv" # Name of the output file can be specified within the script
+dropped_seqs = "./Cels_dropped_seqsminN5.txt" # The ortholog groups containing less than 5 orthologs are dropped and their name is stored in this file
+```
+
+The script requires tensorflow to be installed. The version of tensorflow depends on the CUDA version of the server the script will be run on. Hence, tensorflow version 2.7 was installed. This was done using the following command, after which a virtual environment was created for the script to run. 
+```
+conda install tensorflow==2.7
+conda create -n tensorflow
+conda activate tensorflow
+```
+
+Lastly, the compute_pams.py script was run using PRA splicing regulatory cluster PWMs and intronic fragments using the following command.
+```
+nohup python compute_pams_SB_edited.py ./finalintrons_BH/ PRA-SplcRegCluster.PWM.txt  > PAMS.nohup.out &
+```
+
+This yeilds PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.txt file with PAM scores for all PRA splciing regulatory PWMs. It looks like follows - 
+```
+FILE    NeuSEcluster1_UGGAGRS   NeuSEcluster2_DUUGUG    NeuSEcluster3_-AAGUU    NeuSEcluster4_GCAU      NeuSEcluster5_WGGUWMA   MusSECluster1_-RGRAS    MusSECluster2_-YGUGUG   MusSECluster3_-KACAG    MusSECluster4_GAUGG     MusSECluster5-UAAYW     MusSECluster6_GAGU      MusSECluster7_-GKKUG    MusSECluster8_GGACUA    MusSECluster9_-GGUAAY   MusSECluster10-AUGUG    MusSSCluster1_UGGCA     MusSSCluster2_-CYAR     MusSSCluster3_UCYS      MusSSCluster4_AAAU      NeuSSCluster1-YGGS
+B0348.4d.1_exon_3781_4252_UpstreamIntronFragment_3710_3780.fasta.aln.RevComp.fa.filtered        -0.5715919      -2.0252972      0.27339175      0.7248105       1.0379028       0.97454596      -1.3302739      -1.7360657      -1.0541451      0.6657335       -1.3233831      0.008267455     0.24173972      0.68004733      -0.3339234      -1.2455492      0.3099639       -0.044258855    -0.16147317     -2.5894935
+B0348.4d.1_exon_20722_20837_DownstreamIntronFragment_20838_20908.fasta.aln.RevComp.fa.filtered  1.8435016       1.6923336       0.5837084       -0.39636886     -1.3698089      1.3717935       -1.6330974      -0.05333686     -0.90812415     0.000974301     0.44604513      0.71645886      -1.1334926      -0.70597774     0.4796527       0.014692736     -0.889162       -0.068109155    1.3347595       0.44796857
+...
+```
+## 6. Clustering the PAM scores output file and visualizing the resulting clusters using JavaTreeview
+
+The resulting PAM scores output file  with extension '.csv' was further processed and metadata inferred intially using gtf_exon-intron_annotations pipeline was used. 
+
+cluster3 was used to cluster the PAM scores output file. cluster3 can be found here - http://bonsai.hgc.jp/~mdehoon/software/cluster/. The parameters chosen for clustering are same as Alam et al. paper are - 
+1. Adjusting data by centering arrays on median
+2. Performing heirarchical clustering on genes and on arrays using average linkage
+Manual referred - http://bonsai.hgc.jp/~mdehoon/software/cluster/cluster.pdf
+Following command was run - 
+```
+
+nohup cluster -f PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.csv -ca m -g 1 -e 1 -m a &
+```
 
 # References
 
 Katoh, K., Rozewicki, J., & Yamada, K. D. (2019). MAFFT online service: multiple sequence alignment, interactive sequence choice and visualization. 20(4), 1160–1166. https://doi.org/10.1093/bib/bbx108
 
 Alam, A., Duncan, A. G., Mitchell, J. A., & Moses, A. M. (biorxiv). Functional similarity of non-coding regions is revealed in phylogenetic average motif score representations. https://doi.org/10.1101/2023.04.09.536185
+
+M. J. L. de Hoon, S. Imoto, J. Nolan, and S. Miyano: Open Source Clustering Software. Bioinformatics, 20 (9): 1453--1454 (2004).
 
 
