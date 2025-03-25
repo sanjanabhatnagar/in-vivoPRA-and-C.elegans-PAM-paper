@@ -51,9 +51,13 @@ Additional steps are performed to ensure there's only one occurence of each spec
 
 ## 3. Longest transcript alignments within ortholog groups
 
-The obtained gene sequence files with best orthologs, are aligned using MAFFT. The purpose behind aligning the longest transcript sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group. Additionally, we ensured that in each ortholog group fasta file, C.elegans sequence was the first as MAFFT forces the orientation of the first sequence of the sequence file it is aligning. Following command is used - 
+The obtained gene sequence files with best orthologs, are aligned using MAFFT. Before running MAFFT, reference species, C.elegans is made the first sequence in every ortholog group file as MAFFT forces the orientation of the first sequence of the sequence file it is aligning. The following awk command was used -
 ```
-~/mafft --adjustdirection --quiet --auto --thread 3  Gene_PIDfilter_file > Gene_PIDfilter_file.aln
+for file in *.fa; do     awk '{if ($0 ~ /^>CELEG/) {header=$0; getline; seq=$0} else {body=body ORS $0}} END {print header ORS seq body}' "$file" > temp.fa && mv temp.fa "$file"; done
+```
+The purpose behind aligning the longest transcript sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group. Following command is used - 
+```
+~/mafft --adjustdirectionaccurately --quiet --auto --thread 3  Gene_PIDfilter_file > Gene_PIDfilter_file.aln
 ```
 Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. Since, the exons and introns are located using coordinates, negative strand gene transcripts should be on negative strand whereas positive strand genes shoud be on positive strand (following the reference species, C.elegans) for the next step. 
 
