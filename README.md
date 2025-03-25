@@ -47,15 +47,15 @@ nohup bash WG_multi_besthomolog.sh BH_protien_alignments_directory nucleotide_fa
 ```
 It outputs files with *_PIDfilter.fa!
 
-Additional steps are performed to ensure there's only one occurence of each species name in each file in the directory and thus only one, best ortholog is chosen from each species. 
+Additional steps are performed to ensure there's only one occurence of each species name in each file in the directory and thus only the best ortholog is chosen from each species. 
 
 ## 3. Longest transcript alignments within ortholog groups
 
-The obtained gene sequence files with best orthologs, are aligned using MAFFT. The purpose behind aligning the longest transcript sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group.  Following command is used - 
+The obtained gene sequence files with best orthologs, are aligned using MAFFT. The purpose behind aligning the longest transcript sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group. Additionally, we ensured that in each ortholog group fasta file, C.elegans sequence was the first as MAFFT forces the orientation of the first sequence of the sequence file it is aligning. Following command is used - 
 ```
 ~/mafft --adjustdirection --quiet --auto --thread 3  Gene_PIDfilter_file > Gene_PIDfilter_file.aln
 ```
-Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. 
+Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. Since, the exons and introns are located using coordinates, negative strand gene transcripts should be on negative strand whereas positive strand genes shoud be on positive strand (following the reference species, C.elegans) for the next step. 
 
 ## 4. Extracting per species intron fragments from longest transcript sequence alignments.
 
@@ -88,6 +88,16 @@ The relative ungapped coordinates are 1417 and 1487
 The corresponding gapped coordinates are 6224 and 6464
 ...
 ```
+The inference of adjacent introns relies on a given exon. Therefore, if an exon in one species cannot be aligned to exons in others, the adjacent introns for that exon will not be inferred in those species. The inferred introns are checked for fragments of same size across each species in the files chosen arbitrarily. In this case, we are using all introns shorter than 70 bp and the longer introns are broken into 70 bp fragments from either splice site. 
+
+For calculating the conservation scores, we ensure that sequences within an ortholog group does not contain ambiguous nucleotides, doesn't contain redundant sequences and contains sequences with a minimum distance of 0.01. Hence, the intronic sequences are aligned just for this quality control step where sequences not passing the abovementioned criteria are filtered out before proceeding with the computation of phylogenetically averaged motif scores (PAM) scores. The custom scripts from Alam et al. were used for this step. In order to get the alignments for this filtering step, the same MAFFT command with the parameter, --adjustdirection was used. 
+
+Once the sequences are verified and filtered, we fix the orientation. For the downstream analysis, all intronic sequences, irrespective of the original strandedness of the gene, are converted to positive strand orientation. The shell script revcomp.sh is used which in turn calls a python script called revcomp_afterIntronFragments.py.
+
+'''
+nohup bash revcomp_Introns.sh ./Positive_Strand_gene_names.txt + finalintrons_aln ./output_folder/ &
+nohup bash revcomp_Introns.sh ./Negative_Strand_gene_names.txt - finalintrons_aln ./Neuro_folder/ &
+'''
 
 # References
 
