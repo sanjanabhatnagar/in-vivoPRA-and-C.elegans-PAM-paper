@@ -145,17 +145,22 @@ B0348.4d.1_exon_20722_20837_DownstreamIntronFragment_20838_20908.fasta.aln.RevCo
 ```
 ## 6. Clustering the PAM scores output file and visualizing the resulting clusters using JavaTreeview
 
-The resulting PAM scores output file  with extension '.csv' was further processed and metadata inferred intially using gtf_exon-intron_annotations pipeline was used. 
-
 cluster3 was used to cluster the PAM scores output file. cluster3 can be found here - http://bonsai.hgc.jp/~mdehoon/software/cluster/. The parameters chosen for clustering are same as Alam et al. paper are - 
 1. Adjusting data by centering arrays on median
 2. Performing heirarchical clustering on genes and on arrays using average linkage
 Manual referred - http://bonsai.hgc.jp/~mdehoon/software/cluster/cluster.pdf
+
 Following command was run - 
 ```
-
 nohup cluster -f PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.csv -ca m -g 1 -e 1 -m a &
 ```
+
+The resulting clustered PAM scores output file  with extension '.cdt' is further processed and metadata inferred intially using gtf_exon-intron_annotations pipeline is used - metadata_Introns_annotated.tsv
+```
+nohup python Adding_meta_toPAMS.py metadata_Introns_annotated.tsv PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.cdt PAMS_PRAclusters_meta.csv 70 &
+```
+The clustered and annotated file can be then imported into JavaTreeview. This software can be downloaded from - https://jtreeview.sourceforge.net
+The pixel settings were adjusted accordingly.
 
 # References
 
@@ -164,5 +169,7 @@ Katoh, K., Rozewicki, J., & Yamada, K. D. (2019). MAFFT online service: multiple
 Alam, A., Duncan, A. G., Mitchell, J. A., & Moses, A. M. (biorxiv). Functional similarity of non-coding regions is revealed in phylogenetic average motif score representations. https://doi.org/10.1101/2023.04.09.536185
 
 M. J. L. de Hoon, S. Imoto, J. Nolan, and S. Miyano: Open Source Clustering Software. Bioinformatics, 20 (9): 1453--1454 (2004).
+
+Alok J. Saldanha, Java Treeview—extensible visualization of microarray data, Bioinformatics, Volume 20
 
 
