@@ -56,7 +56,7 @@ for file in *.fa; do     awk '{if ($0 ~ /^>CELEG/) {header=$0; getline; seq=$0} 
 ```
 The purpose behind aligning the longest transcript sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group. Following command is used - 
 ```
-~/mafft --adjustdirectionaccurately --quiet --auto --thread 3  Gene_PIDfilter_file > Gene_PIDfilter_file.aln
+~/mafft --adjustdirectionaccurately --quiet --auto --thread 3  transcript_name_PIDfilter_file > transcript_name_PIDfilter_file.aln
 ```
 Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. Since, the exons and introns are located using coordinates, negative strand gene transcripts should be on negative strand whereas positive strand genes shoud be on positive strand (following the reference species, C.elegans) for the next step. 
 
@@ -66,7 +66,7 @@ Before proceeding the orientation of C.elegans sequence is checked and it is ens
 nohup bash Fragments_AlignedSeqs.sh ./Neuro_Mus_Switch/TranscriptNames_Cutterlab.txt BH_nucleotide_fasta_aln_directory ./output_folder/ > output.txt &
 
 #This in turn calls IntronSegments_alnfastas.py and it is run on different ortholog groups as follows - 
-#python IntronSegments_alnfastas.py B0348.4d.1 ./Neuro_Mus_Switch//BH_nucleotide_fasta_aln_directory/B0348.4_PIDfilter.fa.aln #~/Exon_IntronFragment_coordinates.tsv ~/introns_BH_nucleotide_fasta_aln_directory/
+#python IntronSegments_alnfastas.py B0348.4d.1 ./Neuro_Mus_Switch//BH_nucleotide_fasta_aln_directory/B0348.4_PIDfilter.fa.aln #~/Exon_IntronFragment_coordinates.tsv ~/introns_BH_nucleotide_fasta_directory/
 ```
 It outputs this file while running and the information can be checked to ensure it is running as expected.
 
@@ -93,6 +93,10 @@ The corresponding gapped coordinates are 6224 and 6464
 ```
 The inference of adjacent introns relies on a given exon. Therefore, if an exon in one species cannot be aligned to exons in others, the adjacent introns for that exon will not be inferred in those species. The inferred introns are checked for fragments of same size across each species in the files chosen arbitrarily. In this case, we are using all introns shorter than 70 bp and the longer introns are broken into 70 bp fragments from either splice site. 
 
+Additionally, the introns inferred for negative strand genes were reverse complemented to bring them to the correct orientation before proceeding. The following command was run - 
+```
+nohup bash revcomp_Introns.sh ./Negative_Strand_gene_names.txt - introns_BH_nucleotide_fasta_directory ./output_folder/ &
+```
 For calculating the conservation scores, we ensure that sequences within an ortholog group does not contain ambiguous nucleotides, doesn't contain redundant sequences and contains sequences with a minimum distance of 0.01. Hence, the intronic sequences are aligned just for this quality control step where sequences not passing the abovementioned criteria are filtered out and the sequences that pass are stored in files with extension '.filtered'. The custom scripts from Alam et al. were used for this step. It additionally yeilds a file where the summary of the changes made to each sequence file are logged. The output is -
 
 ```
