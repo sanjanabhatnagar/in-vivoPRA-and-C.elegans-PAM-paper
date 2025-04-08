@@ -40,7 +40,7 @@ Event	Ref	Sps	PID
 ```
 ## 2. Extracting best orthologs nucleotide sequences based on previously calculated protein alignment PIDs.
 
-Next, WG_multi_besthomolog.sh is run to subset the longest transcript nucleotide sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
+Next, WG_multi_besthomolog.sh is run to subset the whole gene sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
 ```
 nohup bash WG_multi_besthomolog.sh BH_protien_alignments_directory nucleotide_fasta_directory ./output_folder/ > output.txt &
 ```
@@ -48,25 +48,25 @@ It outputs files with *_PIDfilter.fa!
 
 Additional steps are performed to ensure there's only one occurence of each species name in each file in the directory and thus only the best ortholog is chosen from each species. 
 
-## 3. Longest transcript alignments within ortholog groups
+## 3. Whole gene sequence alignments within ortholog groups
 
-The obtained gene sequence files with best orthologs, are aligned using MAFFT. Before running MAFFT, reference species, C.elegans is made the first sequence in every ortholog group file as MAFFT forces the orientation of the first sequence of the sequence file it is aligning. The following awk command was used -
+The obtained gene sequence files with best orthologs, are aligned using MAFFT. Before running MAFFT, reference species, C.elegans is made the first sequence in every ortholog group file as MAFFT forces the orientation of the first sequence. The following awk command was used -
 ```
 for file in *.fa; do     awk '{if ($0 ~ /^>CELEG/) {header=$0; getline; seq=$0} else {body=body ORS $0}} END {print header ORS seq body}' "$file" > temp.fa && mv temp.fa "$file"; done
 ```
-The purpose behind aligning the longest transcript sequences was to further extract introns in each species based on exon alignments. This time --adjustdirection parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group. Following command is used - 
+The purpose behind aligning the whole gene sequences within ortholog groups was to further extract introns in each species based on exon alignments. The assumption here is that an exon in C.elegans aligns to an exon in the orthologous sequences from other species, whereas introns fall in the same region as they do for C.elegans gene sequence. We later checked exon-intron boundaries to be confident with the intron fragments we extract from these alignments. This time --adjustdirectionaccurately parameter is used so that MAFFT can find the best orientation for a given orthologous sequence and align it to C.elegans ortholog per ortholog group. Following command is used - 
 ```
 ~/mafft --adjustdirectionaccurately --quiet --auto --thread 3  transcript_name_PIDfilter_file > transcript_name_PIDfilter_file.aln
 ```
 Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. Since, the exons and introns are located using coordinates, negative strand gene transcripts should be on negative strand whereas positive strand genes shoud be on positive strand (following the reference species, C.elegans) for the next step. 
 
-## 4. Extracting per species intron fragments from longest transcript sequence alignments.
+## 4. Extracting per species intron fragments from whole gene sequence alignments.
 
 ```
 nohup bash Fragments_AlignedSeqs.sh ./Neuro_Mus_Switch/TranscriptNames_Cutterlab.txt BH_nucleotide_fasta_aln_directory ./output_folder/ > output.txt &
 
 #This in turn calls IntronSegments_alnfastas.py and it is run on different ortholog groups as follows - 
-#python IntronSegments_alnfastas.py B0348.4d.1 ./Neuro_Mus_Switch//BH_nucleotide_fasta_aln_directory/B0348.4_PIDfilter.fa.aln #~/Exon_IntronFragment_coordinates.tsv ~/introns_BH_nucleotide_fasta_directory/
+#python IntronSegments_alnfastas.py B0348.4 ./Neuro_Mus_Switch//BH_nucleotide_fasta_aln_directory/B0348.4_PIDfilter.fa.aln #~/Exon_IntronFragment_coordinates.tsv ~/introns_BH_nucleotide_fasta_directory/
 ```
 It outputs this file while running and the information can be checked to ensure it is running as expected.
 
@@ -109,12 +109,6 @@ B0348.4d.1_exon_1488_1849_DownstreamIntronFragment_1850_1920.fasta	CELEG.B0348.4
 B0348.4d.1_exon_1488_1849_UpstreamIntronFragment_1417_1487.fasta	CELEG.B0348.4d	42	46	205.0	short:1 too close:3 
 ```
 
-Once the sequences are verified and filtered, we fix the orientation. For the downstream analysis, all intronic sequences, irrespective of the original strandedness of the gene, are converted to positive strand orientation. The shell script revcomp.sh is used which in turn calls a python script called revcomp_afterIntronFragments.py.finalintrons_aln is the name of the folder containing the alignments of the extracted intron fragments.
-
-```
-nohup bash revcomp_Introns.sh ./Positive_Strand_gene_names.txt + finalintrons_aln ./output_folder/ &
-nohup bash revcomp_Introns.sh ./Negative_Strand_gene_names.txt - finalintrons_aln ./output_folder/ &
-```
 ## 5. Computing phylogenetically averaged motif (PAM) scores for PRA splicing regulatory cluster PWMs in intronic fragments
 The script compute_PAMS.py, was adapted from Alam et al. for intronic fragments. Certain parameters were modified for this RNA context -
 
@@ -122,7 +116,7 @@ The script compute_PAMS.py, was adapted from Alam et al. for intronic fragments.
 MOL_TYPE = "RNA" 
 minN = 5 # Minimum number of orthologs required for PAM score calculation
 SEQ_L = 70 # Length of intronic fragments
-FILE_EXT = ".filtered" # Ensuring that PAM scores are only calculated using clean files with filtered sequences.
+FILE_EXT = ".filtered" # Ensuring that PAM scores are only calculated using clean files with filtered sequences from the quality control step.
 outfilename = "./PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.csv" # Name of the output file can be specified within the script
 dropped_seqs = "./Cels_dropped_seqsminN5.txt" # The ortholog groups containing less than 5 orthologs are dropped and their name is stored in this file
 ```
