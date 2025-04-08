@@ -1,6 +1,8 @@
 # Name of the Paper
 
 # Table of contents
+1. Processing PRA MiSeq data and identifying ISS and ISE from PRA elements
+2. PAM score representations of PRA splicing regulatory clusters across switch-like exon flanking intron fragments
 
 ## 1. Performing protein alignments to find best orthologs
 
