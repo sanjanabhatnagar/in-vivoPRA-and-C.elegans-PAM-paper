@@ -11,3 +11,5 @@ The script Splicing_Classifier_PRA_PSIcal.py is used to classify the reads as we
 python Splicing_Classifier_PRA_PSIcal.py CL1_merged.fastq
 python Splicing_Classifier_PRA_PSIcal.py CL2_merged.fastq
 ```
+
+This step parses out the barcodes from the reporter transcripts, thereby linking specific intronic PRA elements to the observed splicing patterns, as quantified by PSI values calculated which are within the same script. Once, the PSI values are obtained we perform Fishers Exact test to identify the intronic PRA elements with statistically significant effect on splicing. The p-values are further adjusted using False discovery rate < 0.01 (Benjamini-Hochberg procedure).
