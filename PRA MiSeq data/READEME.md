@@ -15,7 +15,6 @@ The script **`Splicing_Classifier_PRA_PSIcal.py`** performs the following functi
 - Parses barcodes introduced downstream of exon 3 in the minigene reporter
 - Calculates PSI values for each barcode, representing a unique reporter
 
-### 🔧 Running the Script
 
 ```bash
 python Splicing_Classifier_PRA_PSIcal.py CL1_merged.fastq
