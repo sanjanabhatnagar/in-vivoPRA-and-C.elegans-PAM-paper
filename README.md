@@ -1,4 +1,5 @@
-# Name of the Paper
+# An in vivo parallelized reporter assay to uncover tissue-specific splicing regulatory sequences in a multicellular animal
+
 
 # Table of contents
 1. Processing PRA MiSeq data and identifying ISS and ISE from PRA elements
