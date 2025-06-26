@@ -76,7 +76,9 @@ k-mers showing significant regulatory effects are clustered based on sequence si
 
 
 
-## 2. Performing protein alignments to find best orthologs
+## 2. PAM score representations of PRA splicing regulatory clusters across switch-like exon flanking intron fragments
+
+### 2.1. Performing protein alignments to find best orthologs
 
 The protein alignments were conducted using MAFFT (Katoh et al., 2019). MAFFT can be installed using conda - 
 ```
@@ -112,7 +114,7 @@ Event	Ref	Sps	PID
 ./AminoAcid_SwitchEvents_aln/B0348.4.fa.aln	CELEG	CBREN.CBN25584	0.07344632768361582
 ...
 ```
-## 2.1. Extracting best orthologs nucleotide sequences based on previously calculated protein alignment PIDs.
+### 2.2. Extracting best orthologs nucleotide sequences based on previously calculated protein alignment PIDs.
 
 Next, WG_multi_besthomolog.sh is run to subset the whole gene sequences and only include ortholog sequences with highest PID for a given species, per protein alignment. The shell script runs  WG_besthomolog.py on each file in the given directory.
 ```
@@ -122,7 +124,7 @@ It outputs files with *_PIDfilter.fa!
 
 Additional steps are performed to ensure there's only one occurence of each species name in each file in the directory and thus only the best ortholog is chosen from each species. 
 
-## 2.2. Whole gene sequence alignments within ortholog groups
+### 2.3. Whole gene sequence alignments within ortholog groups
 
 The obtained gene sequence files with best orthologs, are aligned using MAFFT. Before running MAFFT, reference species, C.elegans is made the first sequence in every ortholog group file as MAFFT forces the orientation of the first sequence. The following awk command was used -
 ```
@@ -134,7 +136,7 @@ The purpose behind aligning the whole gene sequences within ortholog groups was 
 ```
 Before proceeding the orientation of C.elegans sequence is checked and it is ensured that negative strand genes and positive strand genes are in correct orientation. Since, the exons and introns are located using coordinates, negative strand gene transcripts should be on negative strand whereas positive strand genes shoud be on positive strand (following the reference species, C.elegans) for the next step. 
 
-## 2.3. Extracting per species intron fragments from whole gene sequence alignments.
+### 2.4. Extracting per species intron fragments from whole gene sequence alignments.
 
 ```
 nohup bash Fragments_AlignedSeqs.sh ./Neuro_Mus_Switch/TranscriptNames_Cutterlab.txt BH_nucleotide_fasta_aln_directory ./output_folder/ > output.txt &
@@ -183,7 +185,7 @@ B0348.4d.1_exon_1488_1849_DownstreamIntronFragment_1850_1920.fasta	CELEG.B0348.4
 B0348.4d.1_exon_1488_1849_UpstreamIntronFragment_1417_1487.fasta	CELEG.B0348.4d	42	46	205.0	short:1 too close:3 
 ```
 
-## 2.4. Computing phylogenetically averaged motif (PAM) scores for PRA splicing regulatory cluster PWMs in intronic fragments
+### 2.5. Computing phylogenetically averaged motif (PAM) scores for PRA splicing regulatory cluster PWMs in intronic fragments
 The script compute_PAMS.py, was adapted from Alam et al. for intronic fragments. Certain parameters were modified for this RNA context -
 
 ```
@@ -214,7 +216,7 @@ B0348.4d.1_exon_3781_4252_UpstreamIntronFragment_3710_3780.fasta.aln.RevComp.fa.
 B0348.4d.1_exon_20722_20837_DownstreamIntronFragment_20838_20908.fasta.aln.RevComp.fa.filtered  1.8435016       1.6923336       0.5837084       -0.39636886     -1.3698089      1.3717935       -1.6330974      -0.05333686     -0.90812415     0.000974301     0.44604513      0.71645886      -1.1334926      -0.70597774     0.4796527       0.014692736     -0.889162       -0.068109155    1.3347595       0.44796857
 ...
 ```
-## 2.5. Clustering the PAM scores output file and visualizing the resulting clusters using JavaTreeview
+### 2.6. Clustering the PAM scores output file and visualizing the resulting clusters using JavaTreeview
 
 cluster3 was used to cluster the PAM scores output file. cluster3 can be found here - http://bonsai.hgc.jp/~mdehoon/software/cluster/. The parameters chosen for clustering are same as Alam et al. paper are - 
 1. Adjusting data by centering arrays on median
