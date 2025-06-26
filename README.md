@@ -10,8 +10,7 @@ Note : Description of all releases is embedded in text
 https://github.com/sanjanabhatnagar/PRA-and-C.elegans-PAM-paper/releases
 
 ## 1. Processing PRA MiSeq data and identifying ISS and ISE from PRA elements
-Data is available in release -
-(https://github.com/sanjanabhatnagar/in-vivoPRA-and-C.elegans-PAM-paper/releases/tag/)
+Data is available in releases under these tags - 
 
 1. Neuronal PRA Plasmid Sequence data - Release v1.1.1
 2. Neuronal PRA cDNA Sequence data - Release v1.1.2
