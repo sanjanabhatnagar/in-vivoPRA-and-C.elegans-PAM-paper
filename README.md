@@ -5,6 +5,9 @@
 1. Processing PRA MiSeq data and identifying ISS and ISE from PRA elements
 2. PAM score representations of PRA splicing regulatory clusters across switch-like exon flanking intron fragments
 
+# Data Release 
+https://github.com/sanjanabhatnagar/PRA-and-C.elegans-PAM-paper/releases
+
 ## 1. Processing PRA MiSeq data and identifying ISS and ISE from PRA elements
 
 ### 1.1. Processing cDNA MiSeq Reads and Calculating PSI Values
