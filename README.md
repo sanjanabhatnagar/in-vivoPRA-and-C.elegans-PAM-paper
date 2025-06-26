@@ -1,4 +1,4 @@
-# An **`in vivo`** parallelized reporter assay to uncover tissue-specific splicing regulatory sequences in a multicellular animal
+# An *in vivo* parallelized reporter assay to uncover tissue-specific splicing regulatory sequences in a multicellular animal
 
 
 # Table of contents
