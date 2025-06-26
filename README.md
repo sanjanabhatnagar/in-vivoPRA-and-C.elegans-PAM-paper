@@ -211,7 +211,7 @@ Lastly, the compute_pams.py script was run using PRA splicing regulatory cluster
 nohup python compute_pams_SB_edited.py ./finalintrons_BH/ PRA-SplcRegCluster.PWM.txt  > PAMS.nohup.out &
 ```
 
-This yeilds PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.txt file with PAM scores for all PRA splciing regulatory PWMs. It looks like follows - 
+This yeilds PAMS_2025celegansintrons_PRAkmerclusters_switchsplc_minN5.txt file with PAM scores for all PRA splciing regulatory PWMs. It looks like follows - 
 ```
 FILE    NeuSEcluster1_UGGAGRS   NeuSEcluster2_DUUGUG    NeuSEcluster3_-AAGUU    NeuSEcluster4_GCAU      NeuSEcluster5_WGGUWMA   MusSECluster1_-RGRAS    MusSECluster2_-YGUGUG   MusSECluster3_-KACAG    MusSECluster4_GAUGG     MusSECluster5-UAAYW     MusSECluster6_GAGU      MusSECluster7_-GKKUG    MusSECluster8_GGACUA    MusSECluster9_-GGUAAY   MusSECluster10-AUGUG    MusSSCluster1_UGGCA     MusSSCluster2_-CYAR     MusSSCluster3_UCYS      MusSSCluster4_AAAU      NeuSSCluster1-YGGS
 B0348.4d.1_exon_3781_4252_UpstreamIntronFragment_3710_3780.fasta.aln.RevComp.fa.filtered        -0.5715919      -2.0252972      0.27339175      0.7248105       1.0379028       0.97454596      -1.3302739      -1.7360657      -1.0541451      0.6657335       -1.3233831      0.008267455     0.24173972      0.68004733      -0.3339234      -1.2455492      0.3099639       -0.044258855    -0.16147317     -2.5894935
@@ -227,7 +227,7 @@ Manual referred - http://bonsai.hgc.jp/~mdehoon/software/cluster/cluster.pdf
 
 Following command was run - 
 ```
-nohup cluster -f PAMS_celegansintrons_PRAkmerclusters_switchsplc_minN5.csv -ca m -g 1 -e 1 -m a &
+nohup cluster -f PAMS_2025celegansintrons_PRAkmerclusters_switchsplc_minN5.csv -ca m -g 1 -e 1 -m a &
 ```
 
 The resulting clustered PAM scores output file  with extension '.cdt' is further processed and metadata inferred intially using gtf_exon-intron_annotations pipeline is used - metadata_Introns_annotated.tsv
