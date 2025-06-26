@@ -88,7 +88,8 @@ k-mers showing significant regulatory effects are clustered based on sequence si
 
 
 ## 2. PAM score representations of PRA splicing regulatory clusters across switch-like exon flanking intron fragments
-Data is available in release 
+Data is available in release - v2.0.0
+https://github.com/sanjanabhatnagar/in-vivoPRA-and-C.elegans-PAM-paper/tree/v2.0.0
 
 ### 2.1. Performing protein alignments to find best orthologs
 
