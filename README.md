@@ -6,13 +6,19 @@
 2. PAM score representations of PRA splicing regulatory clusters across switch-like exon flanking intron fragments
 
 # Data Release 
+Note : Description of all releases is embedded in text
 https://github.com/sanjanabhatnagar/PRA-and-C.elegans-PAM-paper/releases
 
 ## 1. Processing PRA MiSeq data and identifying ISS and ISE from PRA elements
-
+Data is available in release 
+1. Neuronal PRA Plasmid Sequence data -
+2. Neuronal PRA cDNA Sequence data -
+3. Muscle PRA Plasmid Sequence data -
+4. Muscle PRA cDNA Sequence data -
+5. Smaller-Scale PRA data -
+6. 
 ### 1.1. Processing cDNA MiSeq Reads and Calculating PSI Values
 
-Note : All the data and code for this section is in folder PRA MiSeq data 
 
 As described in the **Methods** section of the manuscript, this pipeline begins by assessing the quality of sequences generated from paired-end MiSeq multiplexed sequencing. The `R1` and `R2` files contain reads from both ends of the cDNA sequences. Prior to analysis, these paired-end reads are merged into a single file to ensure both ends contribute to the calculation of PSI values for the corresponding reporter they map back to.
 
