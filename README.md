@@ -16,7 +16,7 @@ Data is available in release
 3. Muscle PRA Plasmid Sequence data -
 4. Muscle PRA cDNA Sequence data -
 5. Smaller-Scale PRA data -
-6. 
+   
 ### 1.1. Processing cDNA MiSeq Reads and Calculating PSI Values
 
 
@@ -88,6 +88,7 @@ k-mers showing significant regulatory effects are clustered based on sequence si
 
 
 ## 2. PAM score representations of PRA splicing regulatory clusters across switch-like exon flanking intron fragments
+Data is available in release 
 
 ### 2.1. Performing protein alignments to find best orthologs
 
