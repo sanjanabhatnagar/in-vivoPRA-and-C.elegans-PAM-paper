@@ -255,6 +255,8 @@ Data is available in releases under these tags -
 
 # References
 
+Fusca, D. D., Kasimatis, K. R., Zhu, H. V., & Cutter, A. D. (2025). Dynamic Birth and Death of Argonaute Gene Family Functional Repertoire Across Caenorhabditis Nematodes. Genome Biol. Evol, 17(6). https://doi.org/10.1093/gbe/evaf106
+
 Kuret, K., Amalietti, A. G., Jones, D. M., Capitanchik, C., & Ule, J. (2022). Positional motif analysis reveals the extent of specificity of protein-RNA interactions observed by CLIP. Genome Biology, 23(1). https://doi.org/10.1186/s13059-022-02755-2
 
 Katoh, K., Rozewicki, J., & Yamada, K. D. (2019). MAFFT online service: multiple sequence alignment, interactive sequence choice and visualization. 20(4), 1160–1166. https://doi.org/10.1093/bib/bbx108
