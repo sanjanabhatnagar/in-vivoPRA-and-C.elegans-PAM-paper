@@ -246,8 +246,8 @@ Data is available in releases under these tags -
 
 1. Neuronal PRA Plasmid Sequence data - Release v1.1.1
 2. Neuronal PRA cDNA Sequence data - Release v1.1.2
-3. Muscle PRA Plasmid Sequence data - Release v1.2.1 (R1 reads) and Release v1.2.2 (R2 reads)
-4. Muscle PRA cDNA Sequence data - Release v1.2.3 (R1 reads) and Release v1.2.4 (R2 reads)
+3. Muscle PRA Plasmid Sequence data - Release v1.2.1 
+4. Muscle PRA cDNA Sequence data - Release v1.2.2 (R1 reads) and Release v1.2.3 (R2 reads)
 5. Smaller-Scale PRA data - Release v1.3.1
 6. k-mer count and Univariate Linear Regression Data - Release v1.4.0
 7. PAM data - Release v2.0.0
