@@ -58,3 +58,16 @@ for a in f:
 
 o1.close()
 o3.close()
+
+
+o4 = pd.read_csv("~PL1_Cis-Element_Barcodes_UMI.csv", sep = ',') # Now counting UMI per cis-element-barcode pair from plasmid sequencing
+#headers = ['Index', 'Cis-element', 'Barcode', 'UMI']
+data = pd.DataFrame(o4)
+
+data_dup_removed = pd.DataFrame.drop_duplicates(data)
+
+data_dup_removed['Element_Pairs'] = (data_dup_removed['Cis-element']+ data_dup_removed['Barcode']).astype(str)
+data_dup_removed=data_dup_removed[['Element_Pairs', 'UMI']]
+
+
+(data_dup_removed['Element_Pairs'].value_counts()).to_csv("~PL1_ElementPairs_UMI_Counts.csv")
